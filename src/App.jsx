@@ -23,12 +23,12 @@ function calculate(starting, monthly, annualRate, years) {
   return { value, values, contributed: starting + monthly * months }
 }
 
-function Input({ label, value, onChange, before, after, note }) {
+function Input({ label, value, onChange, before, after, note, step = 'any' }) {
   return <label className="block">
     <span className="mb-2 block text-sm font-medium text-slate-700">{label}</span>
     <div className="flex items-center border-b border-slate-300 pb-2 transition focus-within:border-slate-900">
       {before && <span className="mr-1.5 text-slate-500">{before}</span>}
-      <input type="number" min="0" step={after === '%' ? '0.1' : '100'} value={value} onChange={(event) => onChange(event.target.value)} className="w-full appearance-none bg-transparent text-lg font-medium text-slate-950 outline-none" />
+      <input type="number" min="0" step={step} value={value} onChange={(event) => onChange(event.target.value)} className="w-full appearance-none bg-transparent text-lg font-medium text-slate-950 outline-none" />
       {after && <span className="ml-2 text-sm text-slate-500">{after}</span>}
     </div>
     {note && <span className="mt-2 block text-xs leading-5 text-slate-500">{note}</span>}
@@ -97,7 +97,7 @@ export default function App() {
       <div className="grid border-y border-slate-200 lg:grid-cols-[330px_minmax(0,1fr)]">
         <form onSubmit={(event) => { event.preventDefault(); setSubmitted({ form: { ...form }, account }) }} className="border-b border-slate-200 py-8 pr-0 lg:border-b-0 lg:border-r lg:py-10 lg:pr-12">
           <h2 className="text-base font-semibold text-slate-950">Your plan</h2><p className="mt-1 text-sm text-slate-500">Amounts are in Canadian dollars.</p>
-          <div className="mt-8 space-y-6"><Input label="Starting amount" before="$" value={form.starting} onChange={update('starting')} /><Input label="Monthly contribution" before="$" value={form.monthly} onChange={update('monthly')} /><Input label="Annual return" after="%" value={form.rate} onChange={update('rate')} note="Taxable accounts use a 2% estimated tax drag." /><Input label="Time horizon" after="years" value={form.years} onChange={update('years')} /></div>
+          <div className="mt-8 space-y-6"><Input label="Starting amount" before="$" step="1" value={form.starting} onChange={update('starting')} /><Input label="Monthly contribution" before="$" step="1" value={form.monthly} onChange={update('monthly')} /><Input label="Annual return" after="%" step="0.1" value={form.rate} onChange={update('rate')} note="Taxable accounts use a 2% estimated tax drag." /><Input label="Time horizon" after="years" step="1" value={form.years} onChange={update('years')} /></div>
           <fieldset className="mt-8"><legend className="text-sm font-medium text-slate-700">Account type</legend><div className="mt-3 flex gap-4">{accountTypes.map((type) => <label key={type} className="flex cursor-pointer items-center gap-2 text-sm text-slate-600"><input type="radio" name="account" value={type} checked={account === type} onChange={() => setAccount(type)} className="h-4 w-4 accent-slate-900" />{type}</label>)}</div></fieldset>
           <button type="submit" className="mt-9 w-full rounded-lg bg-[#159f86] px-4 py-3 text-sm font-semibold text-white transition hover:bg-[#108b75] focus:outline-none focus:ring-2 focus:ring-[#159f86] focus:ring-offset-2">Calculate</button>
         </form>
