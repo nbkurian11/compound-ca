@@ -4,3 +4,13 @@ dist/
 .env
 .env.*
 !.env.example
+
+# .NET and local tooling
+**/bin/
+**/obj/
+.vs/
+*.user
+*.suo
+.tools/
+backend/publish/
+/run.bat

@@ -1,0 +1,15 @@
+@baseUrl = http://localhost:5080
+
+GET {{baseUrl}}/api/health
+
+###
+POST {{baseUrl}}/api/projections
+Content-Type: application/json
+
+{
+  "starting": 10000,
+  "monthly": 500,
+  "rate": 7,
+  "years": 20,
+  "account": "TFSA"
+}
